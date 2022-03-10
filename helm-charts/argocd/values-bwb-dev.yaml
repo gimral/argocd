@@ -3,10 +3,9 @@ server:
   config:
     repositories: |
       - type: git
-        url: https://github.com/paas2/cicd.git  
+        url: https://github.com/paas2/bwb-cluster.git  
       - type: git
-        url: https://github.com/paas2/argocd.git                   
-         
+        url: https://github.com/paas2/argocd.git         
   additionalApplications: 
     - name: argocd
       namespace: argocd
@@ -19,9 +18,9 @@ server:
           version: v3
           valueFiles:
           - values.yaml
-          - helm-charts/argocd/values-cicd-prod.yaml
-        path: helm-charts/argocd
-        repoURL: https://github.com/paas2/argocd.git 
+          - helm-charts/argocd/values-bwb-dev.yaml
+        path: argocd/dev/install/argo-cd
+        repoURL: https://github.com/paas2/bwb-cluster.git 
         targetRevision: HEAD
       syncPolicy:
         syncOptions:
@@ -37,8 +36,8 @@ server:
           version: v3
           valueFiles:
           - values.yaml 
-        path: argocd/prod/apps
-        repoURL: https://github.com/paas2/cicd.git
+        path: argocd/dev/apps
+        repoURL: https://github.com/paas2/bwb-cluster.git
         targetRevision: HEAD
       syncPolicy:
         automated:
@@ -51,8 +50,8 @@ server:
         server: https://kubernetes.default.svc
       project: argocd
       source:
-        path: argocd/prod/projects
-        repoURL: https://github.com/paas2/cicd.git
+        path: argocd/dev/projects
+        repoURL: https://github.com/paas2/bwb-cluster.git
         targetRevision: HEAD
         directory:
           recurse: true
@@ -77,6 +76,3 @@ server:
       kind: '*'
     orphanedResources:
       warn: false
-
-redis-ha:
-  enabled: false      
