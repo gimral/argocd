@@ -5,7 +5,9 @@ server:
       - type: git
         url: https://github.com/paas2/bwb-cluster.git  
       - type: git
-        url: https://github.com/paas2/argocd.git         
+        url: https://github.com/paas2/argocd.git    
+      - type: git
+        url: https://github.com/paas2/clusters-infra.git              
   additionalApplications: 
     - name: argocd
       namespace: argocd
@@ -43,6 +45,24 @@ server:
         automated:
           selfHeal: true
           prune: true
+    - name: argocd-infra-apps
+      namespace: argocd
+      destination:
+        namespace: argocd
+        server: https://kubernetes.default.svc
+      project: argocd
+      source:
+        helm:
+          version: v3
+          valueFiles:
+          - values.yaml 
+        path: bwb/argocd/dev/apps
+        repoURL: https://github.com/paas2/clusters-infra.git
+        targetRevision: HEAD
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true          
     - name: argocd-appprojects
       namespace: argocd
       destination:
@@ -60,6 +80,23 @@ server:
         automated:
           selfHeal: true
           prune: true
+    - name: argocd-infraprojects
+      namespace: argocd
+      destination:
+        namespace: argocd
+        server: https://kubernetes.default.svc
+      project: argocd
+      source:
+        path: bwb/argocd/dev/projects
+        repoURL: https://github.com/paas2/clusters-infra.git
+        targetRevision: HEAD
+        directory:
+          recurse: true
+          jsonnet: {}
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true          
   additionalProjects: 
   - name: argocd
     namespace: argocd
