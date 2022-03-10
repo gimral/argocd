@@ -77,3 +77,6 @@ server:
       kind: '*'
     orphanedResources:
       warn: false
+
+redis-ha:
+  enabled: true      

@@ -11,7 +11,7 @@ keywords:
   - gitops
 dependencies:
   - name: redis-ha
-    version: 4.12.17
+    version: 4.10.4
     repository: "file://../redis-ha"
     condition: redis-ha.enabled
 annotations:

@@ -7,11 +7,6 @@ keywords:
 - redis
 - keyvalue
 - database
-maintainers:
-- email: salimsalaues@gmail.com
-  name: ssalaues
-- email: aaron.layfield@gmail.com
-  name: dandydeveloper
 name: redis-ha
 sources:
 - https://redis.io/download
