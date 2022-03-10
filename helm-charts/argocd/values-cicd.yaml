@@ -4,15 +4,8 @@ server:
     repositories: |
       - type: git
         url: https://github.com/paas2/cicd.git  
-      - name: argo-helm
-        type: helm
-        url: https://argoproj.github.io/argo-helm
-      - name: fluent-helm
-        type: helm
-        url: https://fluent.github.io/helm-charts 
-      - name: kube-prometheus
-        type: helm
-        url: https://prometheus-community.github.io/helm-charts           
+      - type: git
+        url: https://github.com/paas2/argocd.git                   
          
   additionalApplications: 
     - name: argocd
@@ -27,7 +20,7 @@ server:
           valueFiles:
           - values.yaml
           - helm-charts/argocd/values-cicd.yaml
-        path: argocd/dev/install/argo-cd
+        path: helm-charts/argocd
         repoURL: https://github.com/paas2/argocd.git 
         targetRevision: HEAD
       syncPolicy:
