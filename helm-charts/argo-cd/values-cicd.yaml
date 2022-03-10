@@ -26,9 +26,9 @@ server:
           version: v3
           valueFiles:
           - values.yaml
-          - ../values-override.yaml
+          - helm-charts/argocd/values-cicd.yaml
         path: argocd/dev/install/argo-cd
-        repoURL: https://github.com/paas2/cicd.git 
+        repoURL: https://github.com/paas2/argocd.git 
         targetRevision: HEAD
       syncPolicy:
         syncOptions:
