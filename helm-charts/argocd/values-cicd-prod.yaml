@@ -19,7 +19,7 @@ server:
           version: v3
           valueFiles:
           - values.yaml
-          - helm-charts/argocd/values-cicd.yaml
+          - helm-charts/argocd/values-cicd-prod.yaml
         path: helm-charts/argocd
         repoURL: https://github.com/paas2/argocd.git 
         targetRevision: HEAD
@@ -37,7 +37,7 @@ server:
           version: v3
           valueFiles:
           - values.yaml 
-        path: argocd/dev/apps
+        path: argocd/prod/apps
         repoURL: https://github.com/paas2/cicd.git
         targetRevision: HEAD
       syncPolicy:
@@ -51,7 +51,7 @@ server:
         server: https://kubernetes.default.svc
       project: argocd
       source:
-        path: argocd/dev/projects
+        path: argocd/prod/projects
         repoURL: https://github.com/paas2/cicd.git
         targetRevision: HEAD
         directory:
