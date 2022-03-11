@@ -3,10 +3,9 @@ server:
   config:
     repositories: |
       - type: git
-        url: https://github.com/paas2/cicd.git  
+        url: https://github.com/paas2/buildenv-infra-apps.git 
       - type: git
-        url: https://github.com/paas2/argocd.git                   
-         
+        url: https://github.com/paas2/buildenv-apps.git            
   additionalApplications: 
     - name: argocd
       namespace: argocd
@@ -19,14 +18,15 @@ server:
           version: v3
           valueFiles:
           - values.yaml
-          - ./values-cicd-prod.yaml
+          - ./values-buildenv-prod.yaml
         path: helm-charts/argocd
         repoURL: https://github.com/paas2/argocd.git 
         targetRevision: HEAD
       syncPolicy:
         syncOptions:
-        - CreateNamespace=true         
-    - name: argocd-apps
+        - CreateNamespace=true       
+
+    - name: infra-apps  
       namespace: argocd
       destination:
         namespace: argocd
@@ -37,22 +37,60 @@ server:
           version: v3
           valueFiles:
           - values.yaml 
-        path: argocd/prod/apps
-        repoURL: https://github.com/paas2/cicd.git
+        path: prod/apps
+        repoURL: https://github.com/paas2/buildenv-infra-apps.git 
         targetRevision: HEAD
       syncPolicy:
         automated:
           selfHeal: true
-          prune: true
-    - name: argocd-appprojects
+          prune: true  
+          
+    - name: infra-app-projects
       namespace: argocd
       destination:
         namespace: argocd
         server: https://kubernetes.default.svc
       project: argocd
       source:
-        path: argocd/prod/projects
-        repoURL: https://github.com/paas2/cicd.git
+        path: prod/projects
+        repoURL: https://github.com/paas2/buildenv-infra-apps.git  
+        targetRevision: HEAD
+        directory:
+          recurse: true
+          jsonnet: {}
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true          
+
+    - name: buildenv-apps
+      namespace: argocd
+      destination:
+        namespace: argocd
+        server: https://kubernetes.default.svc
+      project: argocd
+      source:
+        helm:
+          version: v3
+          valueFiles:
+          - values.yaml 
+        path: prod/apps
+        repoURL: https://github.com/paas2/buildenv-apps.git 
+        targetRevision: HEAD
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true    
+
+    - name: buildenv-app-projects
+      namespace: argocd
+      destination:
+        namespace: argocd
+        server: https://kubernetes.default.svc
+      project: argocd
+      source:
+        path: prod/projects
+        repoURL: https://github.com/paas2/buildenv-apps.git  
         targetRevision: HEAD
         directory:
           recurse: true
@@ -61,6 +99,7 @@ server:
         automated:
           selfHeal: true
           prune: true
+          
   additionalProjects: 
   - name: argocd
     namespace: argocd
@@ -77,6 +116,3 @@ server:
       kind: '*'
     orphanedResources:
       warn: false
-
-redis-ha:
-  enabled: false      
